@@ -1,0 +1,21 @@
+[
+	{
+		"id": 1,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"responseHeaders": [
+                {
+					"header": "Content-Security-Policy",
+					"operation": "append",
+					"value": "font-src 'self'"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "*",
+            "resourceTypes": ["main_frame", "sub_frame", "stylesheet", "script", "image", "font", "object", "xmlhttprequest", "ping", "csp_report", "media", "websocket", "webtransport", "webbundle", "other"]
+		}
+	}
+]
+

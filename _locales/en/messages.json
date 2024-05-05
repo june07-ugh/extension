@@ -1,0 +1,106 @@
+{
+    "donationModalHeader": {
+        "message": "donations are greatly appreciated",
+        "description": "Donation modal header."
+    },
+    "noNotifications": {
+        "message": "There are no notifications.",
+        "description": "Message to display when there are no notifications."
+    },
+    "appName": {
+        "message": "Ugh.",
+        "description": "The title of the extension displayed in the web store."
+    },
+    "appShortName": {
+        "message": "Ugh",
+        "description": "The short title."
+    },
+    "appDescription": {
+        "message": "Ugh. User Generated Hate",
+        "description": "A description of the extension displayed in the web store."
+    },
+    "pageOptionsTitle": {
+        "message": "Ugh. User Generated Hate - Options Page",
+        "description": "Title shown on options page."
+    },
+    "defaultTitle": {
+        "message": "Ugh. User Generated Hate",
+        "description": "Title shown in tooltip."
+    },
+    "errMsg1": {
+        "message": "Error setting uninstall URL: ",
+        "description": "Error message."
+    },
+    "donate": {
+        "message": "Donate",
+        "description": "Donate."
+    },
+    "enabled": {
+        "message": "Enabled",
+        "description": "Enabled."
+    },
+    "disabled": {
+        "message": "Disabled",
+        "description": "Disabled."
+    },
+    "uptime": {
+        "message": "Uptime",
+        "description": "Uptime."
+    },
+    "options": {
+        "message": "Options",
+        "description": "Options."
+    },
+    "general": {
+        "message": "General",
+        "description": "General."
+    },
+    "on": {
+        "message": "On",
+        "description": "On."
+    },
+    "off": {
+        "message": "Off",
+        "description": "Off."
+    },
+    "save": {
+        "message": "Save",
+        "description": "Save."
+    },
+    "open_tweet": {
+        "message": "Open Tweet",
+        "description": "Tweet link button text."
+    },
+    "thankyou": {
+        "message": "thank you"
+    },
+    "disableThisNotice": {
+        "message": "Disable this notice.",
+        "description": "notification message"
+    },
+    "changeTheShortcut": {
+        "message": "Change the shortcut.",
+        "description": "notification message"
+    },
+    "openNotifications": {
+        "message": "Open notifications.",
+        "description": "notification message to open the notifications popup"
+    },
+    "ownsTheShortcut": {
+        "message": "Ugh owns the $shortcut$ shortcut.",
+        "description": "Notification message informing user that the browser keyboard shortcut is owned by Ugh.",
+        "placeholders": {
+            "shortcut": {
+                "content": "$1"
+            }
+        }
+    },
+    "keyAltS": {
+        "message": "The shortcut opens the screenshot tool.",
+        "description": "screenshot command description"
+    },
+    "keyAltX": {
+        "message": "The shortcut opens the screenshot tool.",
+        "description": "screenshot command description"
+    }
+}

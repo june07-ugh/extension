@@ -1,0 +1,44 @@
+.cropper-container {
+    opacity: 0.55;
+}
+
+.popover.custom-popover {
+    max-height: min-content;
+    min-width: fit-content;
+    opacity: 0.95;
+}
+
+.ugh.btn:hover {
+    background-color: unset !important;
+    opacity: 1 !important;
+}
+
+.ugh.btn svg {
+    transition: transform 0.3s ease !important;
+}
+
+.ugh.btn:hover.dragging svg {
+    transform-origin: center center !important;
+    transform: scale(1) !important;
+    transition: width 0.3s ease,
+        height 0.3s ease,
+        transform 0.3s ease;
+}
+
+.ugh.btn:hover:not(.dragging) svg {
+    transform-origin: center center !important;
+    transform: scale(1.5) !important;
+    transition: width 0.3s ease,
+        height 0.3s ease,
+        transform 0.3s ease;
+}
+
+.carousel.slide {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.collapse.show {
+    visibility: visible;
+}
