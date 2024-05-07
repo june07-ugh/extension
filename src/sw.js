@@ -12,7 +12,7 @@ const VERSION = '0.0.0'
 const INSTALL_URL = 'https://ugh.june07.com/install/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
 const UNINSTALL_URL = 'https://blog.june07.com/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
 const API_SERVER = 'https://api.dev.june07.com'
-const FORUM_URL = 'https://ugh-forum.june07.com'
+const FORUM_URL = 'https://forum-ugh.june07.com'
 let cache = {
     requests: {}
 }
