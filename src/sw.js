@@ -9,10 +9,13 @@ importScripts(
 )
 
 const VERSION = '0.0.0'
-const INSTALL_URL = 'https://forum-ugh.june07.com/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
-const UNINSTALL_URL = 'https://blog.june07.com/ugh-uninstall/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
+const INSTALL_URL = 'https://ugh.june07.com/install/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
+const UNINSTALL_URL = 'https://blog.june07.com/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
 const API_SERVER = 'https://api.dev.june07.com'
-let cache = {}
+const FORUM_URL = 'https://ugh-forum.june07.com'
+let cache = {
+    requests: {}
+}
 
 // This function can't be async... should according to the docs but ran into issues! Worked fine on the Vue side, but not in the popup window.
 async function messageHandler(request, sender, reply) {
@@ -149,7 +152,7 @@ async function markupPage(tabId, ughs) {
     const cacheKey = `injected-${tabId}-markupFunc`
     const svgIcon = await fetchSVGContent()
 
-    if (cache[cacheKey]) return
+    // if (cache[cacheKey]) return
 
     Promise.all([
         chrome.scripting.executeScript({
@@ -175,8 +178,26 @@ async function markupPage(tabId, ughs) {
 
 
 }
-async function updateBadgeIconIfNeeded(url) {
-    const ughed = await didUgh(url)
+async function getUsername() {
+    if (cache.requests.username && cache.requests.username.timestamp > Date.now() - 5 * 60 * 1000) {
+        // console.log('Using cached username', ((Date.now() - 5 * 60 * 1000) - cache.requests.username.timestamp)/1000, cache.requests.username)
+        return cache.requests.username.json
+    }
+    const response = await fetch(`${API_SERVER}/v1/ugh/username`)
+
+    if (!response.ok) {
+        return
+    }
+
+    cache.requests.username = {
+        ...await response.json(),
+        timestamp: Date.now()
+    }
+
+    return cache.requests.username
+}
+async function updateBadgeIconIfNeeded(url, jsonData) {
+    const ughed = await didUgh(url, jsonData)
     if (ughed) {
         chrome.action.setIcon({
             path: chrome.runtime.getManifest().action.ughed
@@ -219,13 +240,23 @@ async function navigationHandler(details) {
         )
 
         markupPage(details.tabId, jsonData)
-        updateBadgeIconIfNeeded(url)
+        updateBadgeIconIfNeeded(url, jsonData)
     } catch (error) {
         console.log('Error:', error)
     }
 }
-async function didUgh(url) {
+async function didUgh(url, jsonData) {
     const uuid = uuidv5(url.split('?')[0], uuidv5.URL)
+
+    if (jsonData) {
+        // if there current response data check it first
+        const username = await getUsername()
+
+        if (username && jsonData.ughs.some(ugh => ugh.user.name === username)) {
+            return true
+        }
+    }
+
     // search indexdb for an ugh with this url
     if (!cache.personalUghsObjectStore) {
         return false
@@ -361,7 +392,7 @@ chrome.action.onClicked.addListener(async () => {
     const alreadyUghed = await didUgh(url)
     console.log('alreadyUghed', alreadyUghed)
     if (alreadyUghed) {
-        pageCapture()
+        await openOrUpdateTab(FORUM_URL)
         return
     }
     try {

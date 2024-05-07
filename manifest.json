@@ -49,6 +49,7 @@
         "service_worker": "/src/sw.js"
     },
     "permissions": [
+        "cookies",
         "declarativeNetRequestWithHostAccess",
         "declarativeNetRequestFeedback",
         "desktopCapture",
@@ -80,5 +81,15 @@
                 "path": "rules/interceptRuleInstagram.json"
             }
         ]
-    }
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "/dist/index.html"
+            ],
+            "matches": [
+                "https://*.june07.com/*"
+            ]
+        }
+    ]
 }

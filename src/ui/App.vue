@@ -8,14 +8,13 @@
                 <ugh-main :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>
         </v-main>
-        <v-img v-if="MODE !== 'production'" ref="devImgRef" @load="devOnloadHandler" src="/ugh.webp" style="visibility: hidden" />
+        <!-- <v-img v-if="MODE !== 'production'" ref="devImgRef" @load="devOnloadHandler" src="/ugh.webp" style="visibility: hidden" /> -->
     </v-app>
 </template>
 <script setup>
 const { MODE, VITE_APP_EXTENSION_ID } = import.meta.env
 
 import { ref, onMounted, provide, getCurrentInstance } from "vue"
-import cookie from 'cookie'
 
 import UghMain from "./components/UghMain.vue"
 
@@ -40,13 +39,18 @@ async function doAuth() {
         await $api.forumAuth(auth.value)
     } else {
         await $api.info()
-        auth.value = {
-            session: cookie.parse(document.cookie)?.['connect.sid']?.match(/s:([^\.]*)/)[1]
-        }
+        chrome.cookies.get({ url: 'https://june07.com', name: 'connect.sid' }, function (cookie) {
+            if (cookie) {
+                auth.value = {
+                    sessionId: decodeURIComponent(cookie.value).match(/s:([^\.]*)/)[1]
+                }
+            }
+        })
     }
 }
 const signin = () => $keycloak.value.login({ redirectUri: `${window.location.origin}/dist/index.html` })
 const signup = () => $keycloak.value.login({ redirectUri: `${window.location.origin}`, action: 'register' })
+/**
 async function devOnloadHandler() {
     const img = devImgRef.value.$el.querySelector('img')
     const canvas = document.createElement('canvas')
@@ -68,6 +72,7 @@ async function devOnloadHandler() {
         tabId: 51878
     }
 }
+ */
 onMounted(() => {
     if (chrome.runtime) {
         workerPort = chrome.runtime.connect(extensionId)

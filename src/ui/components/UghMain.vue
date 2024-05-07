@@ -89,13 +89,13 @@ const props = defineProps({
 })
 const imageEditor = ref()
 const loadedScreenCapture = ref()
-const screenCapture = computed(() => loadedScreenCapture.value || props.screenCapture)
 const form = ref({
     image: true,
     text: MODE === 'production' ? '' : new Date(),
     url: 'https://amazon.com'
 })
-const tabId = ref()
+const crop = ref(props.screenCapture?.crop)
+const tabId = ref(Number(props.screenCapture?.tabId))
 const images = ref(props.screenCapture?.image ? [props.screenCapture.image] : [])
 const rules = {
     url: [v => !!v || 'An Internet location (i.e. a URL) is what is required.'],
@@ -138,7 +138,7 @@ async function submitHandler() {
     // send to backend
     await $api.unlike(props.auth, {
         url: form.value.url?.split('?')[0],
-        crop: screenCapture.value.crop,
+        crop: crop.value,
         comment: form.value.text,
         images: images.value
     })
@@ -165,7 +165,7 @@ async function submitHandler() {
         }
         if (chrome.tabs) {
             const nocacheParam = 'nocache=true'
-            const tab = await chrome.tabs.get(Number(tabId.value || screenCapture.value.tabId))
+            const tab = await chrome.tabs.get(tabId.value)
 
             if (!tab.url.includes(nocacheParam)) {
                 const updatedUrl = tab.url + (tab.url.includes('?') ? '&' : '?') + nocacheParam
@@ -234,15 +234,18 @@ onMounted(() => {
         }
         blobUrlToDataURL(screencaptureObjectURL, (dataURL) => {
             imageEditor.value.loadImageFromURL(dataURL, 'screenshot')
-            tabId.value = params.get('tabId')
+            tabId.value = Number(params.get('tabId'))
         })
     }
-    watch(() => screenCapture.value, screenCapture => {
+    watch(() => props.screenCapture, screenCapture => {
         if (screencaptureObjectURL) return
         nextTick(() => {
             imageEditor.value.loadImageFromURL(screenCapture.image, 'screenshot')
-            form.value.url = (loadedScreenCapture.value?.url || screenCapture?.url)?.split('?')[0]
-            tabId.value = screenCapture?.tabId
+            if (loadedScreenCapture.value?.url || screenCapture?.url) {
+                form.value.url = (loadedScreenCapture.value?.url || screenCapture?.url).split('?')[0]
+            }
+            tabId.value = Number(screenCapture?.tabId)
+            crop.value = screenCapture?.crop
         })
     })
 })

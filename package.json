@@ -4,17 +4,19 @@
   "scripts": {
     "dev": "vite src/ui --host",
     "dev:extension": "npm-run-all --parallel build:dev watch:rollup:deps",
-    "build:dev": "vite build --mode development -w --base /dist/ --sourcemap --minify false",
-    "build": "npm-run-all --serial rimraf build:deps build:ui build:sw zip",
+    "build:ui:dev": "vite build --mode development --base /dist/ --sourcemap --minify false src/ui",
+    "build:dev": "npm-run-all --serial rimraf build:deps build:ui:dev build:copy",
+    "build": "npm-run-all --serial rimraf build:deps build:ui build:copy build:sw zip",
     "build:ui": "cross-env NODE_ENV=production && vite build --base /dist/ --minify true src/ui",
     "build:sw": "node utils/build-sw.js",
+    "build:copy": "node utils/copy-ui.js",
     "build:deps": "cross-env NODE_ENV=production node utils/watch-rollup.js",
     "watch:rollup:deps": "node utils/watch-rollup.js",
     "preview": "vite preview",
     "test": "playwright test --project \"edge@latest@localhost\" \"chrome@latest@localhost\" --workers 5 --retries 3",
     "test:local": "playwright test --project \"edge@latest@localhost\" \"chrome@latest@localhost\" --workers 1",
     "test:post": "playwright test --project \"edge@latest@localhost\" \"chrome@latest@localhost\" --workers 5 --retries 3",
-    "rimraf": "rimraf dist",
+    "rimraf": "rimraf dist && rimraf src/ui/dist",
     "zip": "node utils/update-manifest-and-zip.js"
   },
   "dependencies": {

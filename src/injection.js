@@ -206,6 +206,22 @@
                     `
                     const range = document.createRange()
                     const fragment = range.createContextualFragment(el)
+
+                    fragment.querySelector('.modal').addEventListener('show.bs.modal', function () {
+                        const coordinateButtons = Array.from(document.querySelectorAll('.ugh-coordinates'))
+                        coordinateButtons.forEach(button => {
+                            button.style.display = 'none'
+                        })
+                    })
+
+                    // Add event listener for modal hide event
+                    fragment.querySelector('.modal').addEventListener('hidden.bs.modal', function () {
+                        const coordinateButtons = Array.from(document.querySelectorAll('.ugh-coordinates'))
+                        coordinateButtons.forEach(button => {
+                            button.style.display = '' // Restore default display property
+                        })
+                    })
+
                     return fragment
                 }
                 function ughComments() {
@@ -314,9 +330,9 @@
                 const cropCoordinates = ugh.ughedCrop.split(',').map(Number)
                 // insert a button in the document that will show an overlay of the cropped image(s)
                 const a = document.createElement('a')
-                const iconSize = '48px' // Adjust the size as needed
+                const iconSize = '24px' // Adjust the size as needed
 
-                a.classList.add('ugh', 'btn', 'btn-link', 'animate__animated', 'animate__fadeIn')
+                a.classList.add('ugh', 'ugh-coordinates', 'btn', 'btn-link', 'animate__animated', 'animate__fadeIn')
                 a.addEventListener('animationend', () => {
                     a.classList.replace('animate__hinge', 'animate__fadeIn')
                 })
@@ -339,7 +355,10 @@
                 document.body.append(a)
                 function getContent() {
                     return `
-                        <p>${ugh.ughedComment}</p>
+                        <div style="white-space: pre-wrap">
+                            <div>${ugh.ughedComment}</div>
+                            <div>${ugh.forumUrl ? `<a href="${ugh.forumUrl}" target="_blank" class="me-4">↩️ forum</a>` : ''}</div>
+                        </div>
                         ${imageCarousel()}
                     `
                 }
@@ -376,9 +395,11 @@
             const withCoordinates = ughData.ughs.filter(ugh => ugh.ughedCrop)
             const withoutCoordinates = ughData.ughs.filter(ugh => !ugh.ughedCrop)
 
-            insertButtonWithoutCoordinates(withoutCoordinates)
+            if (withoutCoordinates.length > 0) {
+                insertButtonWithoutCoordinates(withoutCoordinates)
+            }
             if (withCoordinates.length > 0) {
-                for (const [ughIndex, ugh] of withCoordinates.ughs.entries()) {
+                for (const [ughIndex, ugh] of withCoordinates.entries()) {
                     insertButtonWithCoordinates(ughIndex, ugh)
                 }
             }
@@ -401,7 +422,7 @@
 
                 return popover
             })
-            new bootstrap.Carousel('#carousel-top')
+            // new bootstrap.Carousel('#carousel-top')
             document.addEventListener('keydown', function (event) {
                 if (event.key === 'Escape') {
                     popoverList.forEach(popover => {
