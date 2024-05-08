@@ -4,7 +4,8 @@
         checkSSO: false,
         filters: [
             { url: 'all' },
-        ]
+        ],
+        chromeNotifications: true,
     }
     settings.userSettings = async () => await chrome.storage.local.get('userSettings')
     settings.get = async function () {

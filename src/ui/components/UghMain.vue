@@ -1,8 +1,8 @@
 <template>
     <v-container :style="styleObj">
         <v-card flat width="1080" class="mx-auto">
-            <v-card-title class="pb-0 text-center text-h2">Ugh.</v-card-title>
-            <v-card-subtitle class="text-center">If you must loathe, detest, and/or be revolted, use Ugh.</v-card-subtitle>
+            <v-card-title class="pb-0 text-center text-h2">UGh.</v-card-title>
+            <v-card-subtitle class="text-center">If you must loathe, detest, and/or be revolted, use UGh.</v-card-subtitle>
             <v-card-text>
                 <div class="mb-16">
                     <p class="d-flex mt-8 text-body-1">
@@ -37,7 +37,7 @@
             </v-card-text>
             <v-card-actions class="d-flex justify-space-between align-center">
                 <div></div>
-                <v-btn @click="submitHandler" text="Ugh." class="text-body-1 px-8" flat rounded size="large" :loading="loading">
+                <v-btn @click="submitHandler" text="UGh." class="text-body-1 px-8" flat rounded size="large" :loading="loading">
                     <template v-slot:append>
                         <v-img src="/ugh.svg" width="32" height="32"></v-img>
                     </template>
@@ -146,7 +146,7 @@ async function submitHandler() {
     Swal.fire({
         title: 'The world is a better place for knowing!',
         html: "I will close in <b></b> seconds.",
-        text: 'Your Ugh.™ has been tracked and noted!',
+        text: 'Your UGh.™ has been tracked and noted!',
         icon: 'success',
         timer: 2000,
         didOpen: () => {

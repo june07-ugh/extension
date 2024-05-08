@@ -53,6 +53,7 @@
         "declarativeNetRequestWithHostAccess",
         "declarativeNetRequestFeedback",
         "desktopCapture",
+        "notifications",
         "scripting",
         "storage",
         "tabs",

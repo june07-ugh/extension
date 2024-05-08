@@ -9,10 +9,10 @@ importScripts(
 )
 
 const VERSION = '0.0.0'
-const INSTALL_URL = 'https://ugh.june07.com/install/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
+const INSTALL_URL = 'https://ugh.june07.com/faq?category=general&id=663a7cac4c796300015e8649&?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
 const UNINSTALL_URL = 'https://blog.june07.com/?utm_source=ugh&utm_medium=chrome_extension&utm_campaign=extension_install&utm_content=1'
 const API_SERVER = 'https://api.dev.june07.com'
-const FORUM_URL = 'https://forum-ugh.june07.com'
+const FORUM_URL = 'https://forum-ugh.june07.com/'
 let cache = {
     requests: {}
 }
@@ -202,6 +202,10 @@ async function updateBadgeIconIfNeeded(url, jsonData) {
         chrome.action.setIcon({
             path: chrome.runtime.getManifest().action.ughed
         })
+    } else {
+        chrome.action.setIcon({
+            path: chrome.runtime.getManifest().action.default_icon
+        })
     }
 }
 async function navigationHandler(details) {
@@ -253,7 +257,7 @@ async function didUgh(url, jsonData) {
         const username = await getUsername()
 
         if (username && jsonData.ughs.some(ugh => ugh.user.name === username)) {
-            return true
+            return jsonData
         }
     }
 
@@ -268,7 +272,7 @@ async function didUgh(url, jsonData) {
         const getRequest = cache.personalUghsObjectStore.get(uuid)
 
         getRequest.onsuccess = function (event) {
-            resolve(Boolean(event.target.result))
+            resolve(event.target.result)
         }
 
         getRequest.onerror = function (event) {
@@ -392,7 +396,7 @@ chrome.action.onClicked.addListener(async () => {
     const alreadyUghed = await didUgh(url)
     console.log('alreadyUghed', alreadyUghed)
     if (alreadyUghed) {
-        await openOrUpdateTab(FORUM_URL)
+        await openOrUpdateTab(alreadyUghed?.forumUrl || FORUM_URL)
         return
     }
     try {
@@ -413,8 +417,28 @@ chrome.action.onClicked.addListener(async () => {
             if (json) {
                 saveToIndexDb(json)
             }
+            // show the confirmation popup
+            if (settings.chromeNotifications) {
+                chrome.notifications.create('ughed', {
+                    type: 'basic',
+                    iconUrl: '/icon/icon128.png',
+                    title: `${chrome.i18n.getMessage('ughedNotification')} ${json.ughedId.uuid}`,
+                    message: `${json.ughedId.url}`,
+                    buttons: [
+                        { title: chrome.i18n.getMessage('disableThisNotice') },
+                    ]
+                })
+            }
         }
     } catch (error) {
         console.log('Error:', error)
+    }
+})
+chrome.notifications.onButtonClicked.addListener(function chromeNotificationButtonClicked(notificationId, buttonIndex) {
+    switch (notificationId) {
+        case 'ughed':
+            if (buttonIndex === 0) {
+                settings.update({ chromeNotifications: false }).then(() => reply(update))
+            } break
     }
 })
