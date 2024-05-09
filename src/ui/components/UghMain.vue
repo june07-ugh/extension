@@ -6,12 +6,9 @@
             <v-card-text>
                 <div class="mb-16">
                     <p class="d-flex mt-8 text-body-1">
-                    <div>In the parlance of our times, a user generated hate <sup>(ugh *)</sup> is the ability to "downvote", "thumbs-down", "unlike", or just plain "<span class="font-weight-bold">hate</span>" something on the Internet.</div>
+                    <div>In the parlance of our times, UGh. is the tool to "downvote", "thumbs-down", "unlike", or just plain "hate" everything on the internet.</div>
                     <v-spacer />
                     <social-share size="small" text="share it" variant="plain" color="blue" />
-                    </p>
-                    <p class="font-weight-thin text-caption ml-16 mt-0 mb-8">
-                        *(<span class="font-weight-bold">u</span>ser <span class="font-weight-bold">g</span>enerated <span class="font-weight-bold">h</span>ate... yes, a strong word, but sometimes hate is good.)
                     </p>
                 </div>
                 <v-form ref="formRef">
@@ -35,15 +32,12 @@
                 </v-form>
                 <div v-if="props.auth?.preferred_username" class="text-caption font-weight-light mt-n4 text-center">signed in as <span class="font-weight-bold">{{ props.auth.preferred_username }}</span></div>
             </v-card-text>
-            <v-card-actions class="d-flex justify-space-between align-center">
-                <div></div>
+            <v-card-actions class="d-flex justify-center align-center">
                 <v-btn @click="submitHandler" text="UGh." class="text-body-1 px-8" flat rounded size="large" :loading="loading">
                     <template v-slot:append>
                         <v-img src="/ugh.svg" width="32" height="32"></v-img>
                     </template>
                 </v-btn>
-                <v-btn class="text-body-1" v-if="!props.auth?.token" @click="$emit('signin')" text="sign in" variant="plain" rounded />
-                <div v-else></div>
             </v-card-actions>
         </v-card>
     </v-container>

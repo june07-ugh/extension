@@ -8,7 +8,7 @@
         "description": "Message to display when there are no notifications."
     },
     "appName": {
-        "message": "Ugh.",
+        "message": "Ugh",
         "description": "The title of the extension displayed in the web store."
     },
     "appShortName": {
@@ -16,15 +16,15 @@
         "description": "The short title."
     },
     "appDescription": {
-        "message": "Ugh. User Generated Hate",
+        "message": "UGh",
         "description": "A description of the extension displayed in the web store."
     },
     "pageOptionsTitle": {
-        "message": "Ugh. User Generated Hate - Options Page",
+        "message": "UGh - Options Page",
         "description": "Title shown on options page."
     },
     "defaultTitle": {
-        "message": "Ugh. User Generated Hate",
+        "message": "UGh",
         "description": "Title shown in tooltip."
     },
     "errMsg1": {

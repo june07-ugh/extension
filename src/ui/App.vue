@@ -2,6 +2,7 @@
     <v-app>
         <div class="d-flex justify-center">
             <v-btn href="https://forum-ugh.june07.com" target="_blank" variant="text" size="small" prepend-icon="forum" text="forum" />
+            <v-btn v-if="!auth?.token" @click="signin" text="sign in" variant="plain"  size="small" prepend-icon="login" />
         </div>
         <v-main>
             <v-container class="h-100 d-flex justify-center">

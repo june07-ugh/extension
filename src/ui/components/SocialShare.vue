@@ -53,7 +53,7 @@ const props = defineProps({
     },
     title: {
         type: String,
-        default: 'User Generated Hate 👎 on the Internet with Ugh.™, the honest truth hurts.'
+        default: 'UGh™ 👎 downvote, dislike, and disapprove.'
     },
     description: String,
     quote: String,
